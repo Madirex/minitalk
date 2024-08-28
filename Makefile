@@ -1,30 +1,30 @@
-SOURCES = server.c client.c
-OBJECTS = $(SOURCES:.c=.o)
-
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Werror -Wextra
+LIBFT = libft/libft.a
+RM = rm -f
 
-all: server client
+all: client server
 
-server: server.o libft
-	$(CC) -o $@ server.o -Llibft -lft
+client: client.o utils.o $(LIBFT)
+	$(CC) $(CFLAGS) client.o utils.o $(LIBFT) -o client
 
-client: client.o libft
-	$(CC) -o $@ client.o -Llibft -lft
+server: server.o utils.o $(LIBFT)
+	$(CC) $(CFLAGS) server.o utils.o $(LIBFT) -o server
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+%.o: %.c minitalk.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-libft:
-	make -C libft
+$(LIBFT):
+	$(MAKE) -C libft
 
 clean:
-	rm -f $(OBJECTS)
-	make -C libft clean
+	$(MAKE) clean -C libft
+	$(RM) *.o
 
 fclean: clean
-	rm -f server client libft/libft.a
+	$(MAKE) fclean -C libft
+	$(RM) client server
 
 re: fclean all
 
-.PHONY: all clean fclean re libft
+.PHONY: all clean fclean re
