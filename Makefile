@@ -2,14 +2,16 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBFT = libft/libft.a
 RM = rm -f
+CLIENT = client
+SERVER = server
 
-all: client server
+all: $(CLIENT) $(SERVER)
 
-client: client.o utils.o $(LIBFT)
-	$(CC) $(CFLAGS) client.o utils.o $(LIBFT) -o client
+$(CLIENT): client.o utils.o $(LIBFT)
+	$(CC) $(CFLAGS) client.o utils.o $(LIBFT) -o $(CLIENT)
 
-server: server.o utils.o $(LIBFT)
-	$(CC) $(CFLAGS) server.o utils.o $(LIBFT) -o server
+$(SERVER): server.o utils.o $(LIBFT)
+	$(CC) $(CFLAGS) server.o utils.o $(LIBFT) -o $(SERVER)
 
 %.o: %.c minitalk.h
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -23,7 +25,7 @@ clean:
 
 fclean: clean
 	$(MAKE) fclean -C libft
-	$(RM) client server
+	$(RM) $(CLIENT) $(SERVER)
 
 re: fclean all
 
