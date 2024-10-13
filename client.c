@@ -55,21 +55,8 @@ void	send_bit(int server_pid, char *msg, int state)
 
 void	signal_handler(int sig)
 {
-	static int	bits_received = 0;
-
 	if (sig == SIGUSR1)
-	{
-		bits_received++;
 		send_bit(0, NULL, 0);
-	}
-	else if (sig == SIGUSR2)
-	{
-		send_bit(0, NULL, 2);
-		ft_putstr_fd("Bits procesados por el servidor: ", 1);
-		ft_putnbr_fd(bits_received, 1);
-		ft_putchar_fd('\n', 1);
-		bits_received = 0;
-	}
 }
 
 int	main(int argc, char **argv)
@@ -80,7 +67,6 @@ int	main(int argc, char **argv)
 		handle_error(1, NULL, 0);
 	pid = ft_atoi(argv[1]);
 	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
 	send_bit(pid, argv[2], 1);
 	while (1)
 		pause();
