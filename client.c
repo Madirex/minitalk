@@ -57,6 +57,8 @@ void	signal_handler(int sig)
 {
 	if (sig == SIGUSR1)
 		send_bit(0, NULL, 0);
+	else if (sig == SIGUSR2)
+		handle_error(0, NULL, 2);
 }
 
 int	main(int argc, char **argv)
@@ -67,6 +69,7 @@ int	main(int argc, char **argv)
 		handle_error(1, NULL, 0);
 	pid = ft_atoi(argv[1]);
 	signal(SIGUSR1, signal_handler);
+	signal(SIGUSR2, signal_handler);
 	send_bit(pid, argv[2], 1);
 	while (1)
 		pause();
